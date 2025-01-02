@@ -8,6 +8,6 @@ jobs:
     steps:
       - name: Check for broken links
         id: link-report
-        uses: elliotforbes/broken-link-checker@1.0.2
+        uses: elliotforbes/broken-link-checker@1.1.0
         with:
           url: "https://tutorialedge.net"
