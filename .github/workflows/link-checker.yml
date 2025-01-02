@@ -1,7 +1,7 @@
 name: linkchecker
 on: 
   workflow_dispatch:
-broken_link_checker_job:
+jobs:
   runs-on: ubuntu-latest  
   steps:
     - name: Check for broken links
