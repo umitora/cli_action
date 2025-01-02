@@ -1,3 +1,4 @@
+name: link checker
 broken_link_checker_job:
   runs-on: ubuntu-latest  
     steps:
