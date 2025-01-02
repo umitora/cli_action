@@ -1,4 +1,6 @@
 name: linkchecker
+on: 
+  workflow_dispatch:
 broken_link_checker_job:
   runs-on: ubuntu-latest  
   steps:
