@@ -1,0 +1,9 @@
+name: Variables
+on: push
+jobs: 
+    print: 
+        runs-on: ubuntu-latest
+        env: 
+            VERSIONCODE: ${{ vars.VERSIONCODE }}
+        steps:
+            - run: echo "${VERSIONCODE}"
