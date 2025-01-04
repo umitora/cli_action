@@ -4,7 +4,7 @@ jobs:
     print: 
         runs-on: ubuntu-latest
         env: 
-            Actor: ${{ github.actor }}
+            ACTOR: ${{ github.actor }}
         steps: 
             - run: |
                 echo "${ACTOR}" >> $GITHUB_STEP_SUMMARY
