@@ -4,5 +4,10 @@ jobs:
   print:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ github.actor }}" # githubコンテキストの参照
-      
+      - run: | 
+          echo "${{ github.actor }}" # githubコンテキストの参照
+          echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          echo "github.actor: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY # this is a blank line
+
+
