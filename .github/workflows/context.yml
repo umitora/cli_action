@@ -10,5 +10,8 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
           echo "github.actor: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY # this is a blank line
           echo "github.actor: ${{ github.repository_id }}" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          echo "github.actor: ${{ runner.os }}" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          echo "github.actor: ${{ runner.arch }}" >> $GITHUB_STEP_SUMMARY # this is a blank line
+
 
 
