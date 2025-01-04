@@ -6,4 +6,4 @@ jobs:
         env: 
             Actor: ${{ github.actor }}
         steps: 
-            - run: echo"$ACTOR"
+            - run: echo"$ACTOR" >> $GITHUB_STEP_SUMMARY
