@@ -1,8 +1,8 @@
-name: Conditions3
+name: Conditions4
 on: push
 jobs: 
   skip-or-run:
     runs-on: ubuntu-latest
     steps: 
-      - run: echo "Hello"
+      - run: echo "Hello1"
         if: ${{ contains(github.run_id, '1')}}
