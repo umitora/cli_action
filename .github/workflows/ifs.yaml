@@ -1,4 +1,4 @@
-name: Conditions2
+name: Conditions3
 on: push
 jobs: 
   skip-or-run:
