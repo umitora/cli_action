@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - id: source
-          run: echo "result=Hello" >> "${GITHUB_OUTPUT}" # github_outputへ書き出し
+          run: echo "result=おおおお" >> "${GITHUB_OUTPUT}" # github_outputへ書き出し
         - env: 
             RESULT: ${{ steps.source.outputs.result }} # stepsコンテキストから参照
           run: echo "${RESULT}".
