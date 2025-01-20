@@ -7,7 +7,7 @@ jobs:
       pull-requests: write #プルリクエストの書き込みを許可
       contents: read #ソースコードの読み込みを許可
     steps:
-      - uses: action/chechout@v4
+      - uses: actions/chechout@v4
       - run: gh pr comment "${GITHUB_HEAD_REF}" -- body "Hello, ${GITHUB_ACTOR} you are great"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #github cli用クレデンシャル
