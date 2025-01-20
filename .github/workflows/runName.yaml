@@ -1,0 +1,8 @@
+name: Run name
+run-name: Run by @${{ github.actor }} @${{ github.event_name }} #ワークフロー実行名の指定
+on: push
+jobs: 
+  prit: 
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello"
