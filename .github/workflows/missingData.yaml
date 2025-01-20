@@ -1,8 +1,0 @@
-name: Missing share data
-on: push
-jobs:
-  share:
-    runs-on: ubuntu-latest
-    steps:
-      - run: export RESULT="hello" # 次のステップに環境変数で値を渡す
-      - run: echo "${RESULT}"
