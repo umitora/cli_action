@@ -10,35 +10,80 @@ async function syncMarkdownToNotion(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
   const fileName = path.basename(filePath, '.md');
   
-  // Markdownをパース（必要に応じて）
+  // Markdownをパース
   const lines = content.split('\n');
-  const title = lines[0].replace(/^#\s*/, '');
+  const firstHeading = lines.find(line => line.startsWith('# '));
+  const title = firstHeading ? firstHeading.replace(/^#\s*/, '') : fileName;
   
-  // Notionページを作成または更新
   try {
-    await notion.pages.create({
-      parent: { database_id: databaseId },
-      properties: {
-        'Name': {
-          title: [{ text: { content: title } }]
-        },
-        'Path': {
-          rich_text: [{ text: { content: filePath } }]
-        },
-        'Last Updated': {
-          date: { start: new Date().toISOString() }
+    // 既存ページを検索
+    const existingPages = await notion.databases.query({
+      database_id: databaseId,
+      filter: {
+        property: 'Path',
+        rich_text: {
+          equals: filePath
         }
-      },
-      children: convertMarkdownToBlocks(content)
+      }
     });
-    console.log(`Synced: ${fileName}`);
+    
+    if (existingPages.results.length > 0) {
+      // 既存ページを更新
+      const pageId = existingPages.results[0].id;
+      
+      await notion.pages.update({
+        page_id: pageId,
+        properties: {
+          'Name': {
+            title: [{ text: { content: title } }]
+          },
+          'Last Updated': {
+            date: { start: new Date().toISOString() }
+          }
+        }
+      });
+      
+      // 既存コンテンツを削除
+      const existingBlocks = await notion.blocks.children.list({
+        block_id: pageId
+      });
+      
+      for (const block of existingBlocks.results) {
+        await notion.blocks.delete({ block_id: block.id });
+      }
+      
+      // 新しいコンテンツを追加
+      await notion.blocks.children.append({
+        block_id: pageId,
+        children: convertMarkdownToBlocks(content)
+      });
+      
+      console.log(`Updated: ${fileName}`);
+    } else {
+      // 新規ページを作成
+      await notion.pages.create({
+        parent: { database_id: databaseId },
+        properties: {
+          'Name': {
+            title: [{ text: { content: title } }]
+          },
+          'Path': {
+            rich_text: [{ text: { content: filePath } }]
+          },
+          'Last Updated': {
+            date: { start: new Date().toISOString() }
+          }
+        },
+        children: convertMarkdownToBlocks(content)
+      });
+      console.log(`Synced: ${fileName}`);
+    }
   } catch (error) {
     console.error(`Error syncing ${fileName}:`, error);
   }
 }
 
 function convertMarkdownToBlocks(markdown) {
-  // 簡単な変換例（必要に応じて拡張）
   const blocks = [];
   const lines = markdown.split('\n');
   
@@ -55,6 +100,12 @@ function convertMarkdownToBlocks(markdown) {
           rich_text: [{ text: { content: line.substring(3) } }]
         }
       });
+    } else if (line.startsWith('### ')) {
+      blocks.push({
+        heading_3: {
+          rich_text: [{ text: { content: line.substring(4) } }]
+        }
+      });
     } else if (line.trim()) {
       blocks.push({
         paragraph: {
@@ -67,13 +118,17 @@ function convertMarkdownToBlocks(markdown) {
   return blocks;
 }
 
-// docsディレクトリ内のMarkdownファイルをスキャン
-const docsDir = './docs';
-const files = fs.readdirSync(docsDir)
-  .filter(file => file.endsWith('.md'));
+// README.mdを同期
+const readmePath = './README.md';
 
-Promise.all(files.map(file => 
-  syncMarkdownToNotion(path.join(docsDir, file))
-)).then(() => {
-  console.log('All files synced!');
-});
+if (fs.existsSync(readmePath)) {
+  syncMarkdownToNotion(readmePath).then(() => {
+    console.log('README sync completed!');
+  }).catch(error => {
+    console.error('Sync failed:', error);
+    process.exit(1);
+  });
+} else {
+  console.error('README.md not found!');
+  process.exit(1);
+}
