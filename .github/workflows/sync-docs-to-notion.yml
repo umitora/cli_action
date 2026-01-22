@@ -4,7 +4,7 @@ name: Sync Docs to Notion
 on:
   push:
     paths:
-      - 'docs/**'
+      - 'README.md'
     branches:
       - main
 
