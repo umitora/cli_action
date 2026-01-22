@@ -25,4 +25,4 @@ jobs:
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
         run: |
           npm install @notionhq/client
-          node scripts/sync-to-notion.js
+          node Scripts/sync-to-notion.js
