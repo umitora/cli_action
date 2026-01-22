@@ -4,7 +4,9 @@ name: Sync Docs to Notion
 on:
   push:
     paths:
-      - 'README.md'
+      - '**.md'                           # 全てのMarkdownファイル
+      - '.github/notion-sync-config.yml'  # 設定ファイル
+      - 'Scripts/**'                      # スクリプトの変更
     branches:
       - main
 
@@ -12,17 +14,21 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Sync to Notion
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
         run: |
-          npm install @notionhq/client
           node Scripts/sync-to-notion.js
