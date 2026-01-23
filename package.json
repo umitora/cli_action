@@ -1,7 +1,23 @@
 {
   "name": "github-notion-sync",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "Sync multiple markdown files to Notion databases",
+  "main": "Scripts/sync-to-notion.js",
+  "scripts": {
+    "sync": "node Scripts/sync-to-notion.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
   "dependencies": {
-    "@notionhq/client": "^2.2.14"
-  }
+    "@notionhq/client": "^2.2.14",
+    "glob": "^10.3.10",
+    "js-yaml": "^4.1.0"
+  },
+  "keywords": [
+    "notion",
+    "sync",
+    "markdown",
+    "github-actions"
+  ],
+  "author": "",
+  "license": "MIT"
 }

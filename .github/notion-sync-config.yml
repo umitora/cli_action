@@ -1,0 +1,48 @@
+# Notion Sync Configuration
+# 複数のドキュメントグループを定義して、それぞれ異なるNotionデータベースに同期できます
+
+# グローバル設定
+global:
+  # リトライ回数
+  retry_attempts: 3
+  # 並列処理数
+  batch_size: 5
+
+# ドキュメントグループ定義
+document_groups:
+  # メインドキュメント
+  main_docs:
+    paths:
+      - "README.md"
+      - "CONTRIBUTING.md"
+    notion_database_id: "${NOTION_DATABASE_ID}"
+    properties:
+      Category:
+        type: "select"
+        value: "Main"
+
+  # 拡張プランドキュメント
+  plans:
+    paths:
+      - "ENHANCEMENT_PLAN.md"
+    notion_database_id: "${NOTION_DATABASE_ID}"
+    properties:
+      Category:
+        type: "select"
+        value: "Planning"
+
+  # docs配下のドキュメント（将来の拡張用）
+  # docs:
+  #   paths:
+  #     - "docs/**/*.md"
+  #   notion_database_id: "${NOTION_DOCS_DB_ID}"
+  #   properties:
+  #     Category:
+  #       type: "select"
+  #       value: "Documentation"
+
+# 除外パターン
+exclude:
+  - "**/node_modules/**"
+  - "**/.git/**"
+  - "**/drafts/**"
